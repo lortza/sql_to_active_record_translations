@@ -13,13 +13,13 @@ SELECT c.name, m.name, p.qty, ((p.cost_each + p.shipping_each) * qty) AS total
   JOIN manufacturers m ON c.manufacturer_id = m.id
   WHERE c.id = 1;
 
-# this is the closest I can get
-Component.includes(:manufacturer).select(:id, :name, :manufacturer_id).find(1).prices
-# and this
-Price.where(component_id: Component.includes(:manufacturer).find(1).id)
+query = "SELECT c.name, m.name, p.qty, ((p.cost_each + p.shipping_each) * qty) AS total
+  FROM components c
+  JOIN prices p ON c.id = p.component_id
+  JOIN manufacturers m ON c.manufacturer_id = m.id
+  WHERE c.id = 1;"
 
-# but i want something like this (which doesn't work)
-Component.includes(:manufacturer).find(1).prices.select(c.name, m.name, p.qty, ((p.cost_each + p.shipping_each) * qty) AS total)
+components = Component.find_by_sql(query)
 
 
 # 2. Show a list of manufacturer names and a count of all components they make
