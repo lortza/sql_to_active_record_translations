@@ -43,9 +43,16 @@ SELECT p.title
 
 
 -- 8. Post.select("COUNT(*)").group(:category_id)
+SELECT COUNT(*)
+  FROM posts
+  GROUP BY category_id;
 
 
 -- 9. All posts created before 2014
+SELECT *
+  FROM posts
+  WHERE created_at < '2014-01-01';
+
 
 -- 10. A list of all (unique) first names for authors who have written at least 3 posts
 
