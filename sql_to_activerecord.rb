@@ -19,16 +19,21 @@ posts = Post.order(created_at: :desc)
 # WHERE posts.created_at >= '2014-08-31 00:00:00';
 User.joins(:posts).where("posts.created_at >= '2014-08-31 00:00:00'")
 
-# 5. SELECT count(*)
-# FROM users
-# GROUP BY name
-# HAVING count(*) > 1;
+# ---- this SQL works in the rails db
+# 5.
+SELECT count(*)
+  FROM users
+  GROUP BY name
+  HAVING count(*) > 1;
 
-User.all.group(:name).count
-
-User.select('COUNT(*) AS num_users').group(:name).having('num_users >= 3')
-
+# solution (does not work in rails c)
 User.select('COUNT(*) AS num_users').group('name').having('num_users > 1')
+
+#  Returns same sql, but not actual count
+User.select('COUNT(*)').group(:name).having('COUNT(*) >= 3')
+
+# ---- WIP
+User.select('COUNT(*) AS usr_count').group(:name).having('usr_count >= 3')
 
 
 # 6. The most recently updated user
