@@ -41,15 +41,7 @@ sql = "SELECT m.name, COUNT(c.manufacturer_id)
         FROM components c
         JOIN manufacturers m ON m.id = c.manufacturer_id
         GROUP BY m.name;"
-records = ActiveRecord::Base.connection.execute(sql)
-
-records.each {|r| p r}
-# {"name"=>"The Game Crafter", "count"=>5}
-# {"name"=>"Aspire", "count"=>2}
-# {"name"=>"MFLABEL", "count"=>1}
-# {"name"=>"MPC", "count"=>1}
-# {"name"=>"Party Spin", "count"=>1}
-# {"name"=>"AZ-Cover", "count"=>1}
+records = ActiveRecord::Base.connection.execute(sql).to_a
 
 
 # 3. List of each component and how many products it is included in
