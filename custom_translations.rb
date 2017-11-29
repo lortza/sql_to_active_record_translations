@@ -80,4 +80,10 @@ SELECT product_id, COUNT(component_id)
 
 ComponentProduct.group(:product_id).count
 
+# 6. Show a count of all components in product with id 5
+SELECT COUNT(*)
+  FROM component_products
+  WHERE product_id = 5;
+
+ComponentProduct.where('product_id = ?', 5).count
 
