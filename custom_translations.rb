@@ -18,7 +18,7 @@ Component.includes(:manufacturer).select(:id, :name, :manufacturer_id).find(1).p
 # and this
 Price.where(component_id: Component.includes(:manufacturer).find(1).id)
 
-# but i want something like this
+# but i want something like this (which doesn't work)
 Component.includes(:manufacturer).find(1).prices.select(c.name, m.name, p.qty, ((p.cost_each + p.shipping_each) * qty) AS total)
 
 
@@ -32,7 +32,7 @@ SELECT m.name, COUNT(c.manufacturer_id)
 Component.includes(:manufacturer).select(:name).group(:manufacturer_id).count
 #  => {4=>1, 1=>5, 5=>1, 3=>1, 6=>2, 2=>1}
 
-# but I want to get something like this
+# but I want to get something like this (which doesn't work)
 Component.includes(:manufacturer).group('manufacturer.name').count
 #  => {'MPC'=>1, 'The Game Crafter'=>5, 'Party Spin'=>1, 'AZ-Cover'=>1, 'Aspire'=>2, 'MFLABEL'=>1}
 
