@@ -31,8 +31,14 @@ User.select('COUNT(*) AS num_users').group(:name).having('num_users >= 3')
 User.select('COUNT(*) AS num_users').group('name').having('num_users > 1')
 
 
+# 6. The most recently updated user
+User.order(updated_at: :desc).limit(1)
 
-# * The most recently updated user
-# * The oldest user (by age)
-# * all the users
-# * all posts sorted in descending order by date created
+# 7. The oldest user (by age)
+User.order(age: :desc).limit(1)
+
+# 8. all the users
+User.all
+
+# 9. all posts sorted in descending order by date created
+Post.order(created_at: :desc)
