@@ -55,7 +55,20 @@ SELECT *
 
 
 -- 10. A list of all (unique) first names for authors who have written at least 3 posts
+SELECT u.name
+  FROM users u
+  JOIN posts p ON u.id = p.user_id
+  GROUP BY u.name
+  HAVING COUNT(p.*) >= 2;
+
 
 -- 11. The posts with titles that start with the word "The"
+SELECT *
+  FROM posts p
+  WHERE p.title LIKE 'The%';
+
 
 -- 12. Posts with IDs of 3,5,7, and 9
+SELECT *
+  FROM posts p
+  WHERE p.id IN (3,5,7,9);
