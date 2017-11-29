@@ -28,20 +28,8 @@ SELECT m.name, COUNT(c.manufacturer_id)
   JOIN manufacturers m ON m.id = c.manufacturer_id
   GROUP BY m.name;
 
-# this is the closest I can get
-Component.includes(:manufacturer).select(:name).group(:manufacturer_id).count
-#  => {4=>1, 1=>5, 5=>1, 3=>1, 6=>2, 2=>1}
+Component.joins("JOIN manufacturers ON manufacturers.id = components.manufacturer_id").group("manufacturers.name").count
 
-# but I want to get something like this (which doesn't work)
-Component.includes(:manufacturer).group('manufacturer.name').count
-#  => {'MPC'=>1, 'The Game Crafter'=>5, 'Party Spin'=>1, 'AZ-Cover'=>1, 'Aspire'=>2, 'MFLABEL'=>1}
-
-# and will settle for
-sql = "SELECT m.name, COUNT(c.manufacturer_id)
-        FROM components c
-        JOIN manufacturers m ON m.id = c.manufacturer_id
-        GROUP BY m.name;"
-records = ActiveRecord::Base.connection.execute(sql).to_a
 
 
 # 3. List of each component and how many products it is included in
@@ -50,8 +38,7 @@ SELECT c.name AS component, COUNT(cp.*) AS products
   JOIN component_products cp ON c.id = cp.component_id
   GROUP BY c.name;
 
-# this is the closest I can get
-Component.all.map { |c| {name: c.name, products: c.products.count} }
+Component.joins("JOIN component_products ON component_id = components.id").group("components.name").count
 
 
 # 4. List of products and how many components they each have
@@ -60,8 +47,7 @@ SELECT p.name AS product, COUNT(cp.*) AS components
   JOIN component_products cp ON p.id = cp.product_id
   GROUP BY p.name;
 
-# this is the closest I can get
-Product.all.map { |p| {name: p.name, components: p.components.count} }
+Product.joins("JOIN component_products ON product_id = products.id").group("products.name").count
 
 
 # 5. Products and components without joins
@@ -86,4 +72,3 @@ SELECT COUNT(*)
   WHERE product_id = 5;
 
 ComponentProduct.where('product_id = ?', 5).count
-
