@@ -72,4 +72,20 @@ SELECT p.name AS product, COUNT(cp.*) AS components
 Product.all.map { |p| {name: p.name, components: p.components.count} }
 
 
+# 5. Products and components without joins
+# a. List of each component_id and how many products it is included in
+SELECT component_id, COUNT(product_id)
+  FROM component_products
+  GROUP BY component_id;
+
+ComponentProduct.group(:component_id).count
+
+
+# b. List of product_ids and how many components they each have
+SELECT product_id, COUNT(component_id)
+  FROM component_products
+  GROUP BY product_id;
+
+ComponentProduct.group(:product_id).count
+
 
