@@ -42,11 +42,11 @@ SELECT count(*)
 # solution (does not work in rails c)
 User.select('COUNT(*) AS num_users').group('name').having('num_users > 1')
 
-#  Returns same sql, but not actual count
+#  Returns same sql, but an empty active record object instead of a count
 User.select('COUNT(*)').group(:name).having('COUNT(*) >= 3')
 
-# ---- WIP
-User.select('COUNT(*) AS usr_count').group(:name).having('usr_count >= 3')
+# Returns name with count in a hash
+User.group(:name).having('COUNT(*) > 1').count
 
 
 # 6. The most recently updated user
